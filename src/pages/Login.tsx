@@ -17,7 +17,7 @@ const Login = () => {
       login("mock_token");
       toast({
         title: "Login Successful",
-        description: "Welcome back!",
+        description: "Welcome to FraudifyDetective!",
       });
       navigate("/dashboard");
     } catch (error) {
@@ -39,16 +39,16 @@ const Login = () => {
             Welcome to FraudifyDetective
           </h1>
           <p className="text-gray-600 mt-2">
-            Sign in to access your fraud detection dashboard
+            Sign in with Google to access your fraud detection dashboard
           </p>
         </div>
 
         <Button
           onClick={handleGoogleLogin}
           variant="outline"
-          className="w-full py-6 mb-4"
+          className="w-full py-6 mb-4 flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
         >
-          <Mail className="mr-2" />
+          <Mail className="w-5 h-5" />
           Continue with Google
         </Button>
 
