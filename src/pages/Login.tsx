@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
-import { LogIn, Google } from "lucide-react";
+import { LogIn, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
 
@@ -48,7 +48,7 @@ const Login = () => {
           variant="outline"
           className="w-full py-6 mb-4"
         >
-          <Google className="mr-2" />
+          <Mail className="mr-2" />
           Continue with Google
         </Button>
 
