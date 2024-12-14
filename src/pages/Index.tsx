@@ -3,8 +3,12 @@ import { TransactionForm } from "@/components/TransactionForm";
 import { RiskScore } from "@/components/RiskScore";
 import { TransactionHistory } from "@/components/TransactionHistory";
 import { toast } from "@/components/ui/use-toast";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
 
 const Index = () => {
+  const { logout, user } = useAuth();
   const [analysisResult, setAnalysisResult] = React.useState<{
     score: number;
     factors: string[];
@@ -58,31 +62,47 @@ const Index = () => {
   };
 
   return (
-    <div className="container py-8">
-      <h1 className="text-3xl font-bold mb-8">Fraud Detection System</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Analyze Transaction</h2>
-          <TransactionForm onAnalyze={handleAnalyze} />
+    <div className="min-h-screen bg-gray-50">
+      <nav className="bg-white shadow-sm">
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center">
+            <h1 className="text-2xl font-bold text-primary">FraudifyDetective</h1>
+            <span className="ml-4 text-gray-600">Welcome, {user?.name}</span>
+          </div>
+          <Button variant="ghost" onClick={logout}>
+            <LogOut className="mr-2" />
+            Logout
+          </Button>
         </div>
-        
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Analysis Results</h2>
-          {analysisResult ? (
-            <RiskScore
-              score={analysisResult.score}
-              factors={analysisResult.factors}
-            />
-          ) : (
-            <div className="h-full flex items-center justify-center text-gray-500">
-              Submit a transaction to see analysis results
-            </div>
-          )}
+      </nav>
+
+      <div className="container mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-xl font-semibold mb-4">Analyze Transaction</h2>
+            <TransactionForm onAnalyze={handleAnalyze} />
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-xl font-semibold mb-4">Analysis Results</h2>
+            {analysisResult ? (
+              <RiskScore
+                score={analysisResult.score}
+                factors={analysisResult.factors}
+              />
+            ) : (
+              <div className="h-full flex items-center justify-center text-gray-500">
+                Submit a transaction to see analysis results
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Transaction History</h2>
+          <TransactionHistory transactions={transactions} />
         </div>
       </div>
-
-      <TransactionHistory transactions={transactions} />
     </div>
   );
 };
