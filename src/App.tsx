@@ -1,20 +1,20 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Index from "./pages/Index";
-import Landing from "./pages/Landing";
-import Login from "./pages/Login";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster";
+import { Sonner } from "@/components/ui/sonner";
+
+import Landing from "@/pages/Landing";
+import Login from "@/pages/Login";
+import Index from "@/pages/Index";
+import DatasetUpload from "@/pages/DatasetUpload";
 
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useAuth();
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" />;
   return <>{children}</>;
 };
 
@@ -33,6 +33,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Index />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dataset-upload"
+              element={
+                <ProtectedRoute>
+                  <DatasetUpload />
                 </ProtectedRoute>
               }
             />

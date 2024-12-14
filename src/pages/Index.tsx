@@ -5,13 +5,19 @@ import { TransactionHistory } from "@/components/TransactionHistory";
 import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { LogOut, Upload } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const { logout, user } = useAuth();
+  const navigate = useNavigate();
   const [analysisResult, setAnalysisResult] = React.useState<{
     score: number;
     factors: string[];
+    analysis: {
+      legitimate: string[];
+      fraudulent: string[];
+    };
   } | null>(null);
 
   // Mock transaction history
@@ -40,17 +46,31 @@ const Index = () => {
   ]);
 
   const handleAnalyze = (data: any) => {
-    // Mock analysis - in a real app, this would call an AI model
     console.log("Analyzing transaction data:", data);
     
+    // Mock analysis with more detailed results
     const mockAnalysis = {
       score: Math.floor(Math.random() * 100),
       factors: [
-        "Transaction amount is significantly higher than user average",
-        "New merchant interaction detected",
-        "Transaction location differs from usual pattern",
-        "Multiple transactions in short time window",
+        "Transaction amount pattern analysis",
+        "Merchant reputation check",
+        "Location-based risk assessment",
+        "Transaction frequency analysis",
       ],
+      analysis: {
+        legitimate: [
+          "Transaction amount within historical range",
+          "Known merchant with good reputation",
+          "Regular transaction location",
+          "Normal transaction frequency",
+        ],
+        fraudulent: [
+          "Unusual transaction timing",
+          "Multiple transactions in short period",
+          "Different device than usual",
+          "New beneficiary account",
+        ],
+      },
     };
 
     setAnalysisResult(mockAnalysis);
@@ -69,10 +89,16 @@ const Index = () => {
             <h1 className="text-2xl font-bold text-primary">FraudifyDetective</h1>
             <span className="ml-4 text-gray-600">Welcome, {user?.name}</span>
           </div>
-          <Button variant="ghost" onClick={logout}>
-            <LogOut className="mr-2" />
-            Logout
-          </Button>
+          <div className="flex items-center space-x-4">
+            <Button variant="outline" onClick={() => navigate("/dataset-upload")}>
+              <Upload className="mr-2 h-4 w-4" />
+              Upload Dataset
+            </Button>
+            <Button variant="ghost" onClick={logout}>
+              <LogOut className="mr-2" />
+              Logout
+            </Button>
+          </div>
         </div>
       </nav>
 
@@ -89,6 +115,7 @@ const Index = () => {
               <RiskScore
                 score={analysisResult.score}
                 factors={analysisResult.factors}
+                analysis={analysisResult.analysis}
               />
             ) : (
               <div className="h-full flex items-center justify-center text-gray-500">
