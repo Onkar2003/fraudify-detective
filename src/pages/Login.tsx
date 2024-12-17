@@ -32,7 +32,9 @@ const Login = () => {
       console.log("Initiating Google login...");
       // Mock successful login for demonstration
       await new Promise(resolve => setTimeout(resolve, 1500));
-      login("mock_token");
+      // Mock email for Google login
+      const mockEmail = "user@gmail.com";
+      login("mock_token", mockEmail);
       toast.success("Login Successful", {
         description: "Welcome to FraudifyDetective!",
       });
@@ -49,7 +51,7 @@ const Login = () => {
     try {
       console.log("Login attempt with:", values);
       await new Promise(resolve => setTimeout(resolve, 1000));
-      login("mock_token");
+      login("mock_token", values.email);
       toast.success("Login Successful");
       navigate("/dashboard");
     } catch (error) {
