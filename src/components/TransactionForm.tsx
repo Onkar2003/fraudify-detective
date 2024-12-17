@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 export const TransactionForm = ({ onAnalyze }: { onAnalyze: (data: any) => void }) => {
   const [formData, setFormData] = React.useState({
     upiId: "",
+    merchantUpiId: "",
     accountHolder: "",
     merchantName: "",
     amount: "",
@@ -30,13 +31,25 @@ export const TransactionForm = ({ onAnalyze }: { onAnalyze: (data: any) => void 
     <Card className="p-6">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="upiId">UPI ID</Label>
+          <Label htmlFor="upiId">Your UPI ID</Label>
           <Input
             id="upiId"
             name="upiId"
             value={formData.upiId}
             onChange={handleChange}
-            placeholder="example@upi"
+            placeholder="your-id@upi"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="merchantUpiId">Merchant UPI ID</Label>
+          <Input
+            id="merchantUpiId"
+            name="merchantUpiId"
+            value={formData.merchantUpiId}
+            onChange={handleChange}
+            placeholder="merchant@upi"
             required
           />
         </div>

@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Upload, FileText, AlertCircle, CheckCircle2, XCircle } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
-import { useAuth } from "@/context/AuthContext";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import { DatasetNavbar } from "@/components/DatasetNavbar";
 
 const DatasetUpload = () => {
   const { user } = useAuth();
@@ -90,8 +90,10 @@ const DatasetUpload = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Card className="p-6 space-y-6">
+    <div className="min-h-screen bg-gray-50">
+      <DatasetNavbar />
+      <div className="container mx-auto px-4 py-8">
+        <Card className="p-6 space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold">Dataset Analysis</h2>
           <span className="text-sm text-gray-600">Welcome, {user?.name}</span>
@@ -252,7 +254,8 @@ const DatasetUpload = () => {
             </Card>
           )}
         </div>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 };
