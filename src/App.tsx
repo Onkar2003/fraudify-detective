@@ -10,6 +10,7 @@ import Login from "@/pages/Login";
 import SignUp from "@/pages/SignUp";
 import Index from "@/pages/Index";
 import DatasetUpload from "@/pages/DatasetUpload";
+import Profile from "@/pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <DatasetUpload />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               }
             />

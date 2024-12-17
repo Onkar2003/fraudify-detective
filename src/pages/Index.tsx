@@ -5,11 +5,12 @@ import { TransactionHistory } from "@/components/TransactionHistory";
 import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
-import { LogOut, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Navbar } from "@/components/Navbar";
 
 const Index = () => {
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [analysisResult, setAnalysisResult] = React.useState<{
     score: number;
@@ -20,7 +21,6 @@ const Index = () => {
     };
   } | null>(null);
 
-  // Mock transaction history
   const [transactions] = React.useState([
     {
       id: "1",
@@ -83,33 +83,23 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-primary">FraudifyDetective</h1>
-            <span className="ml-4 text-gray-600">Welcome, {user?.name}</span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Button variant="outline" onClick={() => navigate("/dataset-upload")}>
-              <Upload className="mr-2 h-4 w-4" />
-              Upload Dataset
-            </Button>
-            <Button variant="ghost" onClick={logout}>
-              <LogOut className="mr-2" />
-              Logout
-            </Button>
-          </div>
-        </div>
-      </nav>
-
+      <Navbar />
       <div className="container mx-auto px-6 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Transaction Analysis</h1>
+          <Button onClick={() => navigate("/dataset-upload")}>
+            <Upload className="mr-2 h-4 w-4" />
+            Upload Dataset
+          </Button>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow">
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
             <h2 className="text-xl font-semibold mb-4">Analyze Transaction</h2>
             <TransactionForm onAnalyze={handleAnalyze} />
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow">
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
             <h2 className="text-xl font-semibold mb-4">Analysis Results</h2>
             {analysisResult ? (
               <RiskScore
@@ -125,8 +115,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Transaction History</h2>
+        <div className="bg-white p-6 rounded-lg shadow-sm border">
           <TransactionHistory transactions={transactions} />
         </div>
       </div>

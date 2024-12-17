@@ -1,11 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+interface User {
+  name: string;
+  email: string;
+  profilePicture?: string;
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (token: string) => void;
+  login: (token: string, userEmail: string) => void;
   logout: () => void;
-  user: any | null;
+  user: User | null;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -17,26 +23,40 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
+
+  const extractNameFromEmail = (email: string) => {
+    const name = email.split('@')[0];
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
-    if (token) {
+    const userEmail = localStorage.getItem("user_email");
+    if (token && userEmail) {
       setIsAuthenticated(true);
-      // In a real app, you would validate the token and fetch user data
-      setUser({ name: "John Doe", email: "john@example.com" });
+      setUser({
+        name: extractNameFromEmail(userEmail),
+        email: userEmail,
+      });
     }
   }, []);
 
-  const login = (token: string) => {
+  const login = (token: string, userEmail: string) => {
     localStorage.setItem("auth_token", token);
+    localStorage.setItem("user_email", userEmail);
     setIsAuthenticated(true);
+    setUser({
+      name: extractNameFromEmail(userEmail),
+      email: userEmail,
+    });
     navigate("/dashboard");
   };
 
   const logout = () => {
     localStorage.removeItem("auth_token");
+    localStorage.removeItem("user_email");
     setIsAuthenticated(false);
     setUser(null);
     navigate("/login");
