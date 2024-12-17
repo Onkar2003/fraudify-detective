@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
-import { LogIn, Mail, Lock, ArrowRight } from "lucide-react";
+import { UserPlus, Mail, Lock, User, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
@@ -11,35 +11,36 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-const Login = () => {
+const SignUp = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleSignUp = async () => {
     try {
-      console.log("Initiating Google login...");
-      // Mock successful login for demonstration
+      console.log("Initiating Google sign up...");
       await new Promise(resolve => setTimeout(resolve, 1500));
       login("mock_token");
-      toast.success("Login Successful", {
+      toast.success("Account Created Successfully", {
         description: "Welcome to FraudifyDetective!",
       });
       navigate("/dashboard");
     } catch (error) {
-      console.error("Login failed:", error);
-      toast.error("Login Failed", {
+      console.error("Sign up failed:", error);
+      toast.error("Sign Up Failed", {
         description: "Please try again later.",
       });
     }
@@ -47,13 +48,13 @@ const Login = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log("Login attempt with:", values);
+      console.log("Sign up attempt with:", values);
       await new Promise(resolve => setTimeout(resolve, 1000));
       login("mock_token");
-      toast.success("Login Successful");
+      toast.success("Account Created Successfully");
       navigate("/dashboard");
     } catch (error) {
-      toast.error("Login failed. Please try again.");
+      toast.error("Sign up failed. Please try again.");
     }
   };
 
@@ -61,13 +62,30 @@ const Login = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-6">
         <div className="text-center space-y-4">
-          <LogIn className="w-12 h-12 text-primary mx-auto" />
-          <h1 className="text-2xl font-bold text-gray-900">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to access your dashboard</p>
+          <UserPlus className="w-12 h-12 text-primary mx-auto" />
+          <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
+          <p className="text-gray-600">Sign up to get started with FraudifyDetective</p>
         </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input className="pl-10" placeholder="Enter your name" {...field} />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="email"
@@ -97,7 +115,7 @@ const Login = () => {
                       <Input 
                         type="password" 
                         className="pl-10" 
-                        placeholder="Enter your password" 
+                        placeholder="Create a password" 
                         {...field} 
                       />
                     </div>
@@ -108,7 +126,7 @@ const Login = () => {
             />
 
             <Button type="submit" className="w-full">
-              Sign In
+              Create Account
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </form>
@@ -124,7 +142,7 @@ const Login = () => {
         </div>
 
         <Button
-          onClick={handleGoogleLogin}
+          onClick={handleGoogleSignUp}
           variant="outline"
           className="w-full flex items-center justify-center gap-2"
         >
@@ -150,9 +168,9 @@ const Login = () => {
         </Button>
 
         <div className="text-center text-sm">
-          <span className="text-gray-600">Don't have an account? </span>
-          <Link to="/signup" className="text-primary hover:underline">
-            Sign up
+          <span className="text-gray-600">Already have an account? </span>
+          <Link to="/login" className="text-primary hover:underline">
+            Sign in
           </Link>
         </div>
       </div>
@@ -160,4 +178,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

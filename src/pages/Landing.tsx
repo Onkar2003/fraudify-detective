@@ -1,16 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Shield, AlertCircle, CheckCircle, ArrowRight } from "lucide-react";
 
 const Landing = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
         <div className="text-2xl font-bold text-primary">FraudifyDetective</div>
-        <Link to="/login">
-          <Button variant="outline">Login</Button>
-        </Link>
+        <div className="space-x-4">
+          <Link to="/login">
+            <Button variant="ghost">Sign In</Button>
+          </Link>
+          <Link to="/signup">
+            <Button variant="outline">Sign Up</Button>
+          </Link>
+        </div>
       </nav>
 
       <main className="container mx-auto px-6 py-12">
@@ -22,11 +29,12 @@ const Landing = () => {
             Protect your financial operations with our advanced AI system that
             detects and prevents fraudulent transactions in real-time.
           </p>
-          <Link to="/login">
-            <Button className="text-lg px-8 py-6">
-              Get Started <ArrowRight className="ml-2" />
-            </Button>
-          </Link>
+          <Button 
+            className="text-lg px-8 py-6"
+            onClick={() => navigate('/signup')}
+          >
+            Get Started <ArrowRight className="ml-2" />
+          </Button>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">
