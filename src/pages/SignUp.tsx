@@ -33,13 +33,10 @@ const SignUp = () => {
     try {
       console.log("Initiating Google sign up...");
       await new Promise(resolve => setTimeout(resolve, 1500));
-      // Mock email for Google signup
-      const mockEmail = "user@gmail.com";
-      login("mock_token", mockEmail);
       toast.success("Account Created Successfully", {
-        description: "Welcome to FraudifyDetective!",
+        description: "Please sign in to continue",
       });
-      navigate("/dashboard");
+      navigate("/login");
     } catch (error) {
       console.error("Sign up failed:", error);
       toast.error("Sign Up Failed", {
@@ -52,9 +49,12 @@ const SignUp = () => {
     try {
       console.log("Sign up attempt with:", values);
       await new Promise(resolve => setTimeout(resolve, 1000));
-      login("mock_token", values.email);
-      toast.success("Account Created Successfully");
-      navigate("/dashboard");
+      // Store name in localStorage for profile
+      localStorage.setItem("user_name", values.name);
+      toast.success("Account Created Successfully", {
+        description: "Please sign in to continue",
+      });
+      navigate("/login");
     } catch (error) {
       toast.error("Sign up failed. Please try again.");
     }
@@ -64,7 +64,7 @@ const SignUp = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-6">
         <div className="text-center space-y-4">
-          <UserPlus className="w-12 h-12 text-primary mx-auto" />
+          <UserPlus className="w-12 h-12 text-primary mx-auto animate-bounce" />
           <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
           <p className="text-gray-600">Sign up to get started with FraudifyDetective</p>
         </div>
@@ -127,7 +127,7 @@ const SignUp = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
               Create Account
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -146,7 +146,7 @@ const SignUp = () => {
         <Button
           onClick={handleGoogleSignUp}
           variant="outline"
-          className="w-full flex items-center justify-center gap-2"
+          className="w-full flex items-center justify-center gap-2 hover:bg-gray-50"
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24">
             <path

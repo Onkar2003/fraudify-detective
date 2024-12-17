@@ -27,6 +27,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
 
   const extractNameFromEmail = (email: string) => {
+    const storedName = localStorage.getItem("user_name");
+    if (storedName) return storedName;
+    
     const name = email.split('@')[0];
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
@@ -57,6 +60,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("user_email");
+    localStorage.removeItem("user_name");
     setIsAuthenticated(false);
     setUser(null);
     navigate("/login");
