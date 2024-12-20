@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Home, LogOut, User } from "lucide-react";
+import { Home, LogOut, User, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
@@ -24,10 +24,15 @@ export const Navbar = () => {
             variant="ghost"
             size="icon"
             onClick={() => navigate("/dashboard")}
+            className="p-0"
           >
-            <Home className="h-5 w-5" />
+            <div className="flex items-center gap-2 px-2">
+              <Shield className="h-6 w-6 text-primary animate-pulse" />
+              <h2 className="text-lg font-semibold bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
+                FraudifyDetective
+              </h2>
+            </div>
           </Button>
-          <h2 className="text-lg font-semibold">FraudifyDetective</h2>
         </div>
 
         <DropdownMenu>
